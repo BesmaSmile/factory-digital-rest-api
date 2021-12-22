@@ -3,6 +3,8 @@ const express = require('express');
 const router = express.Router();
 const paymentService = require('../services/paymentService');
 const validator = require('../middlewares/paymentValidator');
+const authorize = require('../helpers/authorize');
+const Roles = require('../helpers/roles');
 
 function getPayments(req, res) {
   paymentService.getPayments()
@@ -22,7 +24,7 @@ function reimburse(req, res) {
     .catch((err) => { console.log(err); res.status(err.code).json({ error: err.error }); });
 }
 
-router.get('/get_all', getPayments);
+router.get('/get_all', authorize(Roles.Admin), getPayments);
 router.post('/add', validator.addPayment, addPayment);
-router.post('/reimburse', validator.reimburse, reimburse);
+router.post('/reimburse', authorize(Roles.Admin), validator.reimburse,  reimburse);
 module.exports = router;

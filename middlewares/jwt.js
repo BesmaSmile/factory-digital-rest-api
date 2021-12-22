@@ -21,6 +21,7 @@ function jwt() {
       /^\/api-docs.*/,
       '/user/login',
       '/user/register',
+      '/payment/add',
     ],
   });
 }

@@ -9,8 +9,6 @@ const swaggerJSDoc = require('swagger-jsdoc');
 const jwt = require('./middlewares/jwt');
 require('dotenv').config();
 
-const authorize = require('./helpers/authorize');
-const Roles = require('./helpers/roles');
 const port = process.env.PORT || 3000;
 
 console.log('-+-+-REST API');
@@ -68,7 +66,7 @@ app.use((r, res, next) => {
   next();
 });
 app.use('/user', userRouter);
-app.use('/payment', authorize(Roles.Admin), paymentRouter);
+app.use('/payment', paymentRouter);
 
 app.get('/', (req, res) => {
   res.send('Welcome to my REST API');

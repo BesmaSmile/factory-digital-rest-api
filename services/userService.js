@@ -35,7 +35,7 @@ async function login({ username, password }) {
     if(user.role !== 'Admin') {
       throw { code: 403, error: 'unauthorized_user' };
     }
-    const token = jwt.sign({ sub: user._id }, config.secret);
+    const token = jwt.sign({ sub: user._id, role: user.role }, config.secret);
     return {
       user : {
         _id: user._id,
