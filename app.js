@@ -9,12 +9,15 @@ const swaggerJSDoc = require('swagger-jsdoc');
 const jwt = require('./middlewares/jwt');
 require('dotenv').config();
 
+const authorize = require('./helpers/authorize');
+const Roles = require('./helpers/roles');
 const port = process.env.PORT || 3000;
 
 console.log('-+-+-REST API');
 console.log('-+-+-Powred by RABIA CHERIF BESMA');
 
 const userRouter = require('./routes/userRouter');
+const paymentRouter = require('./routes/paymentRouter');
 
 const mongoUrl = process.env.MONGODB_URL;
 console.log(mongoUrl);
@@ -34,7 +37,7 @@ const swaggerDefinition = {
     title: 'REST API',
     version: '1.0.0',
   },
-  host: process.env.NODE_ENV === 'dev' ? 'fd-rest-api.herokuapp.com' : 'localhost:4000',
+  host: process.env.NODE_ENV === 'dev' ? 'factory-digital-rest-api.herokuapp.com' : 'localhost:4000',
   basePath: '/',
 };
 
@@ -42,6 +45,7 @@ const options = {
   swaggerDefinition,
   apis: [
     './doc/user.js',
+    './doc/payment.js',
   ],
 };
 
@@ -64,6 +68,7 @@ app.use((r, res, next) => {
   next();
 });
 app.use('/user', userRouter);
+app.use('/payment', authorize(Roles.Admin), paymentRouter);
 
 app.get('/', (req, res) => {
   res.send('Welcome to my REST API');
