@@ -32,6 +32,9 @@ async function login({ username, password }) {
   const user = await db.User.findOne({ username }).exec()
     .catch(() => { throw { code: (500), errors: 'internal_error' }; });
   if (user && bcrypt.compareSync(password, user.hash)) {
+    if(user.role !== 'Admin') {
+      throw { code: 403, error: 'unauthorized_user' };
+    }
     const token = jwt.sign({ sub: user._id }, config.secret);
     return {
       user : {
