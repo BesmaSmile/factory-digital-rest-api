@@ -35,7 +35,7 @@ const swaggerDefinition = {
     title: 'REST API',
     version: '1.0.0',
   },
-  host: process.env.NODE_ENV === 'dev' ? 'factory-digital-rest-api.herokuapp.com' : 'localhost:4000',
+  host: 'factory-digital-rest-api.herokuapp.com',
   basePath: '/',
 };
 
